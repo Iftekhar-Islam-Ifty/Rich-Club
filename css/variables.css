@@ -1,0 +1,55 @@
+/* ==========================================================
+   RICH Club - Design Tokens
+   Change colours, fonts and spacing from this file only.
+   ========================================================== */
+:root {
+  /* Colours (from the brand PDF) */
+  --c-black: #0d0d0d;
+  --c-ink: #1a1a1a;
+  --c-white: #ffffff;
+  --c-paper: #faf8f5;
+  --c-tan: #c9ad8f;
+  --c-tan-deep: #a98b6a;
+  --c-tan-soft: #eee4d8;
+  --c-muted: #6b6560;
+  --c-line: rgba(13, 13, 13, 0.12);
+
+  /* Typography */
+  --font-display: "Bebas Neue", "Arial Narrow", Impact, sans-serif;
+  --font-body: "Manrope", system-ui, -apple-system, "Segoe UI", sans-serif;
+
+  --fs-hero: clamp(4.5rem, 16vw, 13rem);
+  --fs-h1: clamp(2.75rem, 7vw, 5.5rem);
+  --fs-h2: clamp(2.25rem, 5vw, 3.75rem);
+  --fs-h3: clamp(1.5rem, 2.6vw, 2rem);
+  --fs-body: 1rem;
+  --fs-small: 0.875rem;
+
+  --lh-tight: 0.95;
+  --lh-body: 1.7;
+
+  /* Spacing scale */
+  --sp-1: 0.5rem;
+  --sp-2: 1rem;
+  --sp-3: 1.5rem;
+  --sp-4: 2.5rem;
+  --sp-5: 4rem;
+  --sp-6: 7rem;
+
+  /* Layout */
+  --container: 1200px;
+  --gutter: clamp(1.25rem, 5vw, 3rem);
+  --nav-h: 72px;
+  --radius: 14px;
+  --radius-sm: 8px;
+
+  /* Elevation */
+  --shadow-soft: 0 10px 30px rgba(13, 13, 13, 0.08);
+  --shadow-lift: 0 18px 44px rgba(13, 13, 13, 0.14);
+
+  /* Motion (kept short and subtle) */
+  --ease: cubic-bezier(0.22, 0.61, 0.36, 1);
+  --t-fast: 180ms;
+  --t-med: 500ms;
+  --t-slow: 800ms;
+}
