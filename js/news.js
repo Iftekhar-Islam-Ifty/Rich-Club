@@ -45,6 +45,9 @@
   wrap.addEventListener("click", (e) => {
     const btn = e.target.closest("[data-lightbox]");
     if (!btn) return;
+    /* Future: to link each clipping to its own details page instead of this lightbox,
+       add a `url` field to the item in content.js and, if present, do
+       `location.href = n.url; return;` here instead of opening the dialog. */
     show(Number(btn.closest(".news__item").dataset.index));
     dlg.showModal();
     document.documentElement.classList.add("modal-open");
@@ -60,4 +63,52 @@
     if (e.key === "ArrowRight") show(index + 1);
   });
   dlg.addEventListener("close", () => document.documentElement.classList.remove("modal-open"));
+})();
+
+
+/* ==========================================================
+   "View All" for the news grid (Phase: news card resize).
+   Shows one full row up front (limit follows the grid's own
+   column-count breakpoints) and reveals the rest on click.
+   Without JS, .news__more stays hidden (see CSS) and every
+   clipping is already visible - nothing to fix in that case.
+   ========================================================== */
+(function () {
+  "use strict";
+
+  const grid = document.querySelector("[data-news]");
+  const moreBtn = document.querySelector("[data-news-viewall]");
+  if (!grid || !moreBtn) return;
+
+  const items = [...grid.querySelectorAll(".news__item")];
+  const BREAKPOINTS = [
+    { query: "(max-width: 700px)", limit: 4 },    /* mobile grid is 2 columns, so 4 = two full rows */
+    { query: "(max-width: 1080px)", limit: 3 }
+  ];
+  const limitForViewport = () => {
+    const hit = BREAKPOINTS.find((bp) => window.matchMedia(bp.query).matches);
+    return hit ? hit.limit : 4;
+  };
+
+  let expanded = false;
+
+  function apply() {
+    if (expanded) return;   /* already showing everything; resizing shouldn't hide it again */
+    const limit = limitForViewport();
+    items.forEach((item, i) => { item.hidden = i >= limit; });
+    moreBtn.hidden = items.length <= limit;
+  }
+
+  moreBtn.addEventListener("click", () => {
+    expanded = true;
+    items.forEach((item) => {
+      item.hidden = false;
+      item.classList.add("is-entering");
+    });
+    moreBtn.hidden = true;
+  });
+  grid.addEventListener("animationend", (e) => e.target.classList.remove("is-entering"));
+
+  window.addEventListener("resize", apply, { passive: true });
+  apply();
 })();

@@ -123,7 +123,7 @@
           <p>${esc(C.membership.text)}</p>
         </div>
         <div class="membership__box">
-          <p class="membership__price"><strong>${esc(C.membership.price)}</strong> <span>${esc(C.membership.period)}</span></p>
+          <p class="membership__kicker">${esc(C.membership.kicker)}</p>
           <a class="btn" href="${esc(C.membership.cta.href)}">${esc(C.membership.cta.label)}</a>
         </div>
       </div>`,
@@ -139,6 +139,9 @@
               </button>
               <figcaption><strong>${esc(n.paper)}</strong><span>${esc(n.headline)}</span></figcaption>
             </figure>`).join("")}
+        </div>
+        <div class="news__more">
+          <button class="btn btn--ghost" type="button" data-news-viewall>View All (${C.news.items.length})</button>
         </div>
       </div>`,
 
@@ -158,12 +161,17 @@
         <div class="contact__qr reveal">${img(C.contact.qrImage, C.contact.qrAlt, 'width="180" height="180"')}</div>
       </div>`,
 
-    footer: () => `
+    footer: () => {
+      const dev = C.footer.developer;
+      const devHref = dev.url || "#";
+      return `
       <div class="container footer">
         <p class="footer__brand">${esc(C.site.name)} - ${esc(C.site.tagline)}</p>
         <p class="footer__note">${esc(C.footer.note)}</p>
-        <p class="footer__copy">&copy; ${new Date().getFullYear()} ${esc(C.site.fullName)}</p>
-      </div>`
+        <p class="footer__copy">&copy; ${new Date().getFullYear()} ${esc(C.site.name)}. All rights reserved.</p>
+        <p class="footer__credit">Developed by <a href="${esc(devHref)}"${dev.url ? ' target="_blank" rel="noopener noreferrer"' : ""}>${esc(dev.name)}</a></p>
+      </div>`;
+    }
   };
 
   /* ---------- render ---------- */

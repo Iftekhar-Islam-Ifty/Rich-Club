@@ -473,6 +473,8 @@ html.modal-open { overflow: hidden; }
   border: 0;
   border-radius: 50%;
   background: var(--c-white);
+  color: var(--c-ink);           /* explicit: the news lightbox is dark-themed, so without
+                                     this the "x" inherits white text on a white circle */
   font-size: 1.6rem;
   line-height: 1;
   box-shadow: var(--shadow-soft);
@@ -553,15 +555,20 @@ html.modal-open { overflow: hidden; }
   color: var(--c-white);
   box-shadow: var(--shadow-lift);
 }
-.membership__price { display: flex; align-items: baseline; flex-wrap: wrap; gap: 0.6rem; margin-bottom: var(--sp-3); }
-.membership__price strong {
-  font-family: var(--font-display);
-  font-size: clamp(3.5rem, 8vw, 5.5rem);
+/* ".membership p" (below) is more specific than a single class, so it was
+   winning over this and painting the kicker dark-on-black. Scoping the
+   selector to .membership__box fixes that and keeps it clearly visible. */
+.membership__box .membership__kicker {
+  margin-bottom: var(--sp-3);
+  padding-bottom: var(--sp-2);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  font-family: var(--font-display);              /* same face as the "Become a Member" heading */
+  font-size: clamp(1.85rem, 3.6vw, 2.6rem);
+  line-height: 1.05;
+  letter-spacing: 0.01em;
   font-weight: 400;
-  line-height: 0.9;
-  color: var(--c-tan);
+  color: var(--c-white);
 }
-.membership__price span { color: rgba(255, 255, 255, 0.75); }
 .membership__box .btn { width: 100%; justify-content: center; background: var(--c-tan); border-color: var(--c-tan); color: var(--c-black); }
 .membership__box .btn:hover { background: var(--c-white); border-color: var(--c-white); }
 
@@ -575,15 +582,18 @@ html.modal-open { overflow: hidden; }
    ========================================================== */
 .news__grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: var(--sp-4) var(--sp-3);
+  grid-template-columns: repeat(4, 1fr);   /* first row = the "View All" limit on desktop, see news.js */
+  gap: var(--sp-3) var(--sp-2);
 }
 
 .news__item { display: flex; flex-direction: column; margin: 0; }
+.news__item[hidden] { display: none; }     /* items past the limit, until "View All" is pressed */
+
 .news__open {
   display: block;
   width: 100%;
-  aspect-ratio: 4 / 5;            /* every clipping gets the same box, so rows line up */
+  aspect-ratio: 3 / 4;             /* smaller box than before; still tall enough to read the masthead.
+                                       Open a card to read the full clipping at full size. */
   padding: 0;
   border: 1px solid var(--c-line);
   border-radius: var(--radius-sm);
@@ -595,15 +605,30 @@ html.modal-open { overflow: hidden; }
 .news__open img {
   width: 100%; height: 100%;
   object-fit: cover;
-  object-position: top center;    /* show the masthead and headline; full clipping opens in the lightbox */
+  object-position: top center;
 }
 .news__open img.img-missing { min-height: 0; }
-.news__item figcaption { display: flex; flex-direction: column; gap: 0.15rem; padding: 0.75rem 0.1rem 0; }
-.news__item figcaption strong { font-size: var(--fs-small); }
-.news__item figcaption span { font-size: var(--fs-small); color: var(--c-muted); line-height: 1.5; }
 
-@media (max-width: 960px) { .news__grid { grid-template-columns: repeat(2, 1fr); } }
-@media (max-width: 560px) { .news__grid { grid-template-columns: 1fr; } }
+.news__item figcaption { display: flex; flex-direction: column; gap: 0.15rem; padding: 0.55rem 0.1rem 0; }
+.news__item figcaption strong {
+  font-size: 0.8rem;
+  /* clamp to a fixed number of lines so every card's caption takes the same height */
+  display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden;
+}
+.news__item figcaption span {
+  font-size: 0.78rem;
+  color: var(--c-muted);
+  line-height: 1.45;
+  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+}
+
+/* Hidden without JS: with no script running, nothing gets limited, so there is nothing to reveal. */
+.news__more { display: none; justify-content: center; margin-top: var(--sp-4); }
+.js .news__more { display: flex; }
+.news__more .btn { padding: 0.75rem 2rem; }
+
+@media (max-width: 1080px) { .news__grid { grid-template-columns: repeat(3, 1fr); } }
+@media (max-width: 700px)  { .news__grid { grid-template-columns: repeat(2, 1fr); } }
 
 /* Lightbox (opened from a clipping) */
 .lightbox {
@@ -715,3 +740,23 @@ html.modal-open { overflow: hidden; }
 }
 .footer p { margin: 0; max-width: none; }
 .footer__brand { font-family: var(--font-display); font-size: 1.5rem; letter-spacing: 0.06em; color: var(--c-tan); }
+
+.footer__credit { width: 100%; margin-top: 0.15rem; }   /* own line, under the copyright */
+.footer__credit a {
+  color: inherit;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.35);
+  transition: color var(--t-fast) var(--ease), border-color var(--t-fast) var(--ease);
+}
+.footer__credit a:hover { color: var(--c-tan); border-color: var(--c-tan); }
+
+@media (max-width: 700px) {
+  .footer {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 0.3rem;
+    padding-block: var(--sp-2);
+  }
+  .footer__brand { font-size: 1.2rem; }
+  .footer__note, .footer__copy, .footer__credit { font-size: 0.75rem; }
+}

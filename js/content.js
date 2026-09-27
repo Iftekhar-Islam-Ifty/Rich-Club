@@ -170,8 +170,7 @@ window.RICH_CONTENT = {
   membership: {
     title: "Become a Member",
     text: "Members contribute 100 BDT per month, fueling sustainable societal change.",
-    price: "100 BDT",
-    period: "per month",
+    kicker: "Ready to make a difference?",
     cta: { label: "Join RICH Club", href: "mailto:richcluborg2020@gmail.com?subject=Membership%20Request" }
   },
 
@@ -208,6 +207,10 @@ window.RICH_CONTENT = {
   ],
 
   footer: {
-    note: "Chittagong and Dhaka, Bangladesh"
+    note: "Chittagong and Dhaka, Bangladesh",
+    /* Portfolio site not live yet, so url is empty ("#" is used as a harmless
+       placeholder). Fill it in here once the portfolio is ready - nowhere
+       else needs to change. */
+    developer: { name: "Iftekhar Islam", url: "" }
   }
 };
